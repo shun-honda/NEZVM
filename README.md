@@ -21,5 +21,5 @@ You will have to make a few steps. Type in:
 	$ cd build
 	$ cmake ..
 	$ make
-	$ make install # or execute ./build/pegvm
+	$ make install # or execute ./build/nezvm
 ```
