@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #ifndef NEZVM_H
 #define NEZVM_H
@@ -63,6 +64,8 @@ struct nez_context {
   union nezvm_instruction **call_stack_pointer_base;
 };
 
+#define NEZVM_MAX_STACK_LENGTH 1024
+
 union nez_expression;
 typedef union nez_expression nez_expression;
 
@@ -74,12 +77,14 @@ typedef struct memory_pool memory_pool;
 
 nez_node* create_node();
 void nez_dispose_node(nez_node* node);
-nez_context* nez_create_context(char *input_file);
+nez_context* nez_create_context(const char *input_file);
 void nez_dispose_context(nez_context* context);
-nez_expression* nez_load_grammar(char *syntax_file);
+nez_expression* nez_load_grammar(const char *syntax_file);
 void nez_dispose_expression(nez_expression* expr);
 nezvm_instruction* nezvm_compile(nez_expression* expr, char* start_point);
 void nezvm_dispose_instruction(nezvm_instruction* inst);
+
+char *load_file(const char *filename, size_t *length);
 
 void nez_print_error_info(const char *errmsg);
 nez_node* nez_parse(nez_context* context, nezvm_instruction* inst);

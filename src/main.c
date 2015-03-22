@@ -12,17 +12,15 @@ static void nez_ShowUsage(const char *file) {
   fprintf(stderr, "  -i <filename> Specify an input file\n");
   fprintf(stderr, "  -o <filename> Specify an output file\n");
   fprintf(stderr, "  -t <type>     Specify an output type\n");
-  fprintf(stderr, "  -h            Display this help and exit\n\n");
   exit(EXIT_FAILURE);
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
   const char *syntax_file = NULL;
   const char *input_file = NULL;
   const char *output_type = NULL;
   const char *output_file = NULL;
-  const char *file_type = NULL;
   const char *orig_argv0 = argv[0];
   int opt;
   while ((opt = getopt(argc, argv, "p:i:t:o:h:")) != -1) {

@@ -1,16 +1,16 @@
 #include "nezvm.h"
 
-nez_context* nez_create_context(char *input_file) {
+nez_context* nez_create_context(const char *input_file) {
   nez_context* ctx = (nez_context*)malloc(sizeof(nez_context));
   ctx->pos = ctx->input_size = 0;
   ctx->mpool = (memory_pool*)malloc(sizeof(struct memory_pool));
-  ctx->inputs = load_file(filename, &ctx->input_size);
+  ctx->inputs = load_file(input_file, &ctx->input_size);
   ctx->stacked_symbol_table =
       (nez_symbol_table_entry*)malloc(sizeof(nez_symbol_table_entry) * 256);
   ctx->stack_pointer_base =
       (long *)malloc(sizeof(long) * NEZVM_MAX_STACK_LENGTH);
   ctx->node_stack_pointer_base = (nez_node **)malloc(
-      sizeof(nez_ast*) * NEZVM_MAX_STACK_LENGTH);
+      sizeof(nez_node*) * NEZVM_MAX_STACK_LENGTH);
   ctx->call_stack_pointer_base = (nezvm_instruction **)malloc(
       sizeof(nezvm_instruction *) * NEZVM_MAX_STACK_LENGTH);
   ctx->stack_pointer = &ctx->stack_pointer_base[0];

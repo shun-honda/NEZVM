@@ -1,6 +1,6 @@
 #include "nezvm.h"
 
-nez_expression* nez_load_grammar(char *syntax_file) {
+nez_expression* nez_load_grammar(const char *syntax_file) {
 	// function stub
 }
 
