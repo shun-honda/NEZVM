@@ -81,6 +81,7 @@ void nez_dispose_expression(nez_expression* expr);
 nezvm_instruction* nezvm_compile(nez_expression* expr, char* start_point);
 void nezvm_dispose_instruction(nezvm_instruction* inst);
 
+void nez_print_error_info(const char *errmsg);
 nez_ast* nez_parse(nez_context* context, nezvm_instruction* inst);
 
 #endif /* end of include guard */
