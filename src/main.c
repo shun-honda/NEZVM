@@ -49,9 +49,9 @@ int main(int argc, char const *argv[])
   nez_expression *expr = nez_load_grammar(syntax_file);
   nezvm_instruction *inst = nezvm_compile(expr, "File");
 
-  nez_ast *ast = nez_parse(context, inst);
+  nez_node *ast = nez_parse(context, inst);
 
-  nez_dispose_ast(ast);
+  nez_dispose_node(ast);
   nezvm_dispose_instruction(inst);
   nez_dispose_expression(expr);
   nez_dispose_context(context);

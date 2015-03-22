@@ -9,7 +9,7 @@ nez_context* nez_create_context(char *input_file) {
       (nez_symbol_table_entry*)malloc(sizeof(nez_symbol_table_entry) * 256);
   ctx->stack_pointer_base =
       (long *)malloc(sizeof(long) * NEZVM_MAX_STACK_LENGTH);
-  ctx->node_stack_pointer_base = (nez_ast **)malloc(
+  ctx->node_stack_pointer_base = (nez_node **)malloc(
       sizeof(nez_ast*) * NEZVM_MAX_STACK_LENGTH);
   ctx->call_stack_pointer_base = (nezvm_instruction **)malloc(
       sizeof(nezvm_instruction *) * NEZVM_MAX_STACK_LENGTH);

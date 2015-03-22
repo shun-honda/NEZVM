@@ -7,11 +7,11 @@
 union nezvm_instruction;
 typedef union nezvm_instruction nezvm_instruction;
 
-struct nez_ast {
+struct nez_node {
   int refc; // referencing counting gc
   int child_size;
-  struct nez_ast **child;
-  struct nez_ast *parent;
+  struct nez_node **child;
+  struct nez_node *parent;
   long start_pos;
   long end_pos;
   const char *tag;
@@ -20,12 +20,12 @@ struct nez_ast {
 
 struct nez_log {
   struct nez_log *next;
-  struct nez_ast *child_node;
+  struct nez_node *child_node;
   int index;
 } __attribute__((packed));
 
 struct memory_pool {
-  struct nez_ast *object_pool;
+  struct nez_node *object_pool;
   struct nez_log *log_pool;
   size_t oidx;
   size_t lidx;
@@ -42,8 +42,8 @@ struct nez_context {
   char *inputs;
   size_t input_size;
   long pos;
-  struct nez_ast *node;
-  struct nez_ast *unused_node;
+  struct nez_node *node;
+  struct nez_node *unused_node;
 
   int log_stack_size;
   struct nez_log *log_stack;
@@ -56,24 +56,24 @@ struct nez_context {
   struct nez_symbol_table_entry *stacked_symbol_table;
 
   long *stack_pointer;
-  struct nez_ast **node_stack_pointer;
+  struct nez_node **node_stack_pointer;
   union nezvm_instruction **call_stack_pointer;
   long *stack_pointer_base;
-  struct nez_ast **node_stack_pointer_base;
+  struct nez_node **node_stack_pointer_base;
   union nezvm_instruction **call_stack_pointer_base;
 };
 
 union nez_expression;
 typedef union nez_expression nez_expression;
 
-typedef struct nez_ast nez_ast;
+typedef struct nez_node nez_node;
 typedef struct nez_context nez_context;
 typedef struct nez_log nez_log;
 typedef struct nez_symbol_table_entry nez_symbol_table_entry;
 typedef struct memory_pool memory_pool;
 
-nez_ast* create_ast();
-void nez_dispose_ast(nez_ast* ast);
+nez_node* create_node();
+void nez_dispose_node(nez_node* node);
 nez_context* nez_create_context(char *input_file);
 void nez_dispose_context(nez_context* context);
 nez_expression* nez_load_grammar(char *syntax_file);
@@ -82,6 +82,6 @@ nezvm_instruction* nezvm_compile(nez_expression* expr, char* start_point);
 void nezvm_dispose_instruction(nezvm_instruction* inst);
 
 void nez_print_error_info(const char *errmsg);
-nez_ast* nez_parse(nez_context* context, nezvm_instruction* inst);
+nez_node* nez_parse(nez_context* context, nezvm_instruction* inst);
 
 #endif /* end of include guard */
