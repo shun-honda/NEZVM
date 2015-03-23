@@ -1,6 +1,6 @@
 #include "nezvm.h"
 
-nezvm_instruction* nezvm_compile(nez_expression* expr, char* start_point) {
+nezvm_instruction* nezvm_compile(nez_grammar* nez, char* start_point) {
 	// function stub
 }
 

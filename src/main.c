@@ -44,14 +44,14 @@ int main(int argc, char *argv[])
     }
   }
   nez_context *context = nez_create_context(input_file);
-  nez_expression *expr = nez_load_grammar(syntax_file);
-  nezvm_instruction *inst = nezvm_compile(expr, "File");
+  nez_grammar *nez = nez_load_grammar(syntax_file);
+  nezvm_instruction *inst = nezvm_compile(nez, "File");
 
   nez_node *ast = nez_parse(context, inst);
 
   nez_dispose_node(ast);
   nezvm_dispose_instruction(inst);
-  nez_dispose_expression(expr);
+  nez_dispose_grammar(nez);
   nez_dispose_context(context);
   return 0;
 }

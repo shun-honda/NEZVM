@@ -69,19 +69,35 @@ struct nez_context {
 union nez_expression;
 typedef union nez_expression nez_expression;
 
+struct nez_rule {
+  char* rule_name;
+  nez_expression* expr;
+};
+
+struct nez_grammar {
+  char* input_file_name;
+  size_t rule_list_size;
+  struct nez_rule *rule_list;
+};
+
 typedef struct nez_node nez_node;
 typedef struct nez_context nez_context;
 typedef struct nez_log nez_log;
 typedef struct nez_symbol_table_entry nez_symbol_table_entry;
 typedef struct memory_pool memory_pool;
+typedef struct nez_grammar nez_grammar;
+typedef struct nez_rule nez_rule;
 
 nez_node* create_node();
 void nez_dispose_node(nez_node* node);
 nez_context* nez_create_context(const char *input_file);
 void nez_dispose_context(nez_context* context);
-nez_expression* nez_load_grammar(const char *syntax_file);
-void nez_dispose_expression(nez_expression* expr);
-nezvm_instruction* nezvm_compile(nez_expression* expr, char* start_point);
+nez_grammar* nez_load_grammar(const char *syntax_file);
+nez_grammar* nez_create_grammar(const char *syntax_file, nez_rule *rule_list, size_t rule_list_size);
+void nez_dispose_grammar(nez_grammar* nez);
+nez_rule* nez_create_rules(size_t rule_list_size);
+void nez_dispose_rules(nez_rule *rule_list, size_t rule_list_size);
+nezvm_instruction* nezvm_compile(nez_grammar* nez, char* start_point);
 void nezvm_dispose_instruction(nezvm_instruction* inst);
 
 char *load_file(const char *filename, size_t *length);
