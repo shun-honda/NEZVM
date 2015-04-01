@@ -4,7 +4,7 @@ nez_grammar* nez_load_grammar(const char *syntax_file) {
 	size_t len, rule_list_size;
 	char *syntax_text = load_file(syntax_file, &len);
 	nez_node *nez_ast = nez_parse_grammar(syntax_text);
-	nez_rule *rule_list = nez_create_rules(rule_list_size);
+	nez_rule *rule_list = nez_create_rules(&rule_list_size);
 	return nez_create_grammar(syntax_file, rule_list, rule_list_size);
 }
 
@@ -22,8 +22,8 @@ void nez_dispose_grammar(nez_grammar* nez) {
 	free(nez);
 }
 
-nez_rule* nez_create_rules(size_t rule_list_size) {
-	
+nez_rule* nez_create_rules(size_t* rule_list_size) {
+
 }
 
 void nez_dispose_rules(nez_rule *rule_list, size_t rule_list_size) {

@@ -1,0 +1,93 @@
+#sequence:list
+{
+	union nez_expression** list;
+}
+#choice:list
+{
+	union nez_expression** list;
+}
+#new:list
+{
+	union nez_expression** list;
+}
+#left_join:list
+{
+	union nez_expression** list;
+}
+#option:unary
+{
+	union nez_expression *inner;
+}
+#repetition:unary
+{
+	union nez_expression *inner;
+}
+#not:unary
+{
+	union nez_expression *inner;
+}
+#and:unary
+{
+	union nez_expression *inner;
+}
+#link:unary
+{
+	union nez_expression *inner;
+}
+#tagging:tag
+{
+	nez_tag* tag;
+}
+#value:val
+{
+	char* value;
+}
+#char:term
+{
+	char c;
+}
+#charset:term
+{
+	bitset_ptr_t set;
+}
+#string:term
+{
+	char* str;
+}
+#any:term
+{
+}
+#non_terminal:nonterm
+{
+	char* rule_name;
+}
+#def:unary
+{
+	union nez_expression *inner;
+	nez_tag* table;
+}
+#defindent:func
+{	
+}
+#is:func
+{
+	nez_tag* table;
+	union nez_expression* symbol_expression;
+}
+#indent:func
+{
+}
+#if:func
+{
+	char *flag_name;
+}
+#with:unary
+{
+	union nez_expression *inner;
+	char* flag_name;
+}
+#without:unary
+{
+	union nez_expression *inner;
+	char* flag_name;
+}
