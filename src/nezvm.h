@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include "nez_bitset.c"
 
 #ifndef NEZVM_H

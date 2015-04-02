@@ -42,6 +42,7 @@ set(NEZVM_SOURCE
 			src/nez_print_info.c
 			src/main.c
 			src/loader.c
+			src/arraylist.c
 )
 
 set(PACKAGE_NAME    ${PROJECT_NAME})

@@ -1,4 +1,5 @@
 #include "nezvm.h"
+#include <stdio.h>
 
 char *load_file(const char *filename, size_t *length) {
 	size_t len = 0;
