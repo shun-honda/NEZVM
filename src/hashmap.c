@@ -89,7 +89,7 @@ unsigned long crc32(const unsigned char *s, unsigned int len)
   return crc32val;
 }
 
-map_t hashmap_new() {
+map_t new_hashmap() {
 	hashmap_map* m = (hashmap_map*) malloc(sizeof(hashmap_map));
 	if(!m) {
 		goto err;

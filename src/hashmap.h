@@ -11,7 +11,7 @@
 typedef void *any_t;
 typedef any_t map_t;
 
-void* new_hashmap();
+map_t new_hashmap();
 void dispose_hashmap(map_t in);
 int hashmap_length(map_t in);
 int hashmap_put(map_t in, char* key, any_t value);

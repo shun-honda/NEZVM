@@ -160,7 +160,7 @@ void nez_dispose_link(nez_expression *expr) {
 	free(e);
 }
 
-nez_expression* nez_new_tagging(nez_tag* tag) {
+nez_expression* nez_new_tagging(nez_tag_entry* tag) {
 	nez_tagging *e = (nez_tagging*)malloc(sizeof(nez_tagging));
 	e->base.expr = NEZ_TAGGING;
 	e->base.size = 0;
@@ -255,7 +255,7 @@ void nez_dispose_non_terminal(nez_expression *expr) {
 	free(e);
 }
 
-nez_expression* nez_new_def(nez_expression *expr, nez_tag* tag) {
+nez_expression* nez_new_def(nez_expression *expr, nez_tag_entry* tag) {
 	nez_def *e = (nez_def*)malloc(sizeof(nez_def));
 	e->base.expr = NEZ_DEF;
 	e->base.size = 1;
@@ -283,7 +283,7 @@ void nez_dispose_defindent(nez_expression *expr) {
 	free(expr);
 }
 
-nez_expression* nez_new_is(nez_expression *expr, nez_tag* tag) {
+nez_expression* nez_new_is(nez_expression *expr, nez_tag_entry* tag) {
 	nez_is *e = (nez_is*)malloc(sizeof(nez_is));
 	e->base.expr = NEZ_IS;
 	e->base.size = 0;
@@ -295,7 +295,7 @@ void nez_dispose_is(nez_expression *expr) {
 	free(expr);
 }
 
-nez_expression* nez_new_isa(nez_expression *expr, nez_tag* tag) {
+nez_expression* nez_new_isa(nez_expression *expr, nez_tag_entry* tag) {
 	nez_isa *e = (nez_isa*)malloc(sizeof(nez_isa));
 	e->base.expr = NEZ_ISA;
 	e->base.size = 0;

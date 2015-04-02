@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "nez_bitset.c"
+#include "arraylist.h"
+#include "hashmap.h"
 
 #ifndef NEZVM_H
 #define NEZVM_H
@@ -74,10 +76,22 @@ typedef struct nez_expr_base {
   int id;
 } nez_expr_base;
 
-typedef struct nez_tag {
+typedef struct nez_tag_entry {
   int id;
-  char tag_name;
+  char *tag_name;
+} nez_tag_entry;
+
+typedef struct nez_tag {
+  array_list* list;
+  map_t map;
 } nez_tag;
+
+nez_tag* nez_new_tag();
+void nez_dispose_tag(nez_tag* tag);
+nez_tag_entry* tag(nez_tag* tag, char* name);
+nez_tag_entry* tag_id(nez_tag* tag, int id);
+nez_tag_entry* nez_new_tag_entry(nez_tag* tag, char* name);
+void nez_dispose_tag_entry(void* tag_entry);
 
 typedef bitset_t *bitset_ptr_t;
 
@@ -174,7 +188,7 @@ typedef struct nez_link nez_link;
 #define NEZ_TAGGING 9
 struct nez_tagging{
   nez_expr_base base;
-  nez_tag* tag;
+  nez_tag_entry* tag;
 };
 typedef struct nez_tagging nez_tagging;
 
@@ -223,7 +237,7 @@ typedef struct nez_non_terminal nez_non_terminal;
 struct nez_def{
   nez_expr_base base;
   union nez_expression *inner;
-  nez_tag* table;
+  nez_tag_entry* table;
 };
 typedef struct nez_def nez_def;
 
@@ -236,7 +250,7 @@ typedef struct nez_defindent nez_defindent;
 #define NEZ_IS 18
 struct nez_is{
   nez_expr_base base;
-  nez_tag* table;
+  nez_tag_entry* table;
   union nez_expression* symbol_expression;
 };
 typedef struct nez_is nez_is;
@@ -244,7 +258,7 @@ typedef struct nez_is nez_is;
 #define NEZ_ISA 19
 struct nez_isa{
   nez_expr_base base;
-  nez_tag* table;
+  nez_tag_entry* table;
   union nez_expression* symbol_expression;
 };
 typedef struct nez_isa nez_isa;
@@ -351,7 +365,7 @@ nez_expression* nez_new_and(nez_expression *expr);
 void nez_dispose_and(nez_expression *expr);
 nez_expression* nez_new_link(nez_expression *expr);
 void nez_dispose_link(nez_expression *expr);
-nez_expression* nez_new_tagging(nez_tag* tag);
+nez_expression* nez_new_tagging(nez_tag_entry* tag);
 void nez_dispose_tagging(nez_expression *expr);
 nez_expression* nez_new_value(char* value);
 void nez_dispose_value(nez_expression *expr);
@@ -365,13 +379,13 @@ nez_expression* nez_new_any();
 void nez_dispose_any(nez_expression *expr);
 nez_expression* nez_new_non_terminal(char* rule_name);
 void nez_dispose_non_terminal(nez_expression *expr);
-nez_expression* nez_new_def(nez_expression *expr, nez_tag* tag);
+nez_expression* nez_new_def(nez_expression *expr, nez_tag_entry* tag);
 void nez_dispose_def(nez_expression *expr);
 nez_expression* nez_new_defindent(nez_expression *expr);
 void nez_dispose_defindent(nez_expression *expr);
-nez_expression* nez_new_is(nez_expression *expr, nez_tag* tag);
+nez_expression* nez_new_is(nez_expression *expr, nez_tag_entry* tag);
 void nez_dispose_is(nez_expression *expr);
-nez_expression* nez_new_isa(nez_expression *expr, nez_tag* tag);
+nez_expression* nez_new_isa(nez_expression *expr, nez_tag_entry* tag);
 void nez_dispose_isa(nez_expression *expr);
 nez_expression* nez_new_indent(nez_expression *expr);
 void nez_dispose_indent(nez_expression *expr);
