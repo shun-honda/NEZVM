@@ -103,10 +103,11 @@ typedef bitset_t *bitset_ptr_t;
   EXPR(def)\
   EXPR(defindent)\
   EXPR(is)\
+  EXPR(isa)\
   EXPR(indent)\
   EXPR(if)\
   EXPR(with)\
-  EXPR(without)
+  EXPR(without)\
 
 #define NEZ_SEQUENCE 0
 struct nez_sequence{
@@ -241,20 +242,28 @@ struct nez_is{
 };
 typedef struct nez_is nez_is;
 
-#define NEZ_INDENT 19
+#define NEZ_ISA 19
+struct nez_isa{
+  nez_expr_base base;
+  nez_tag* table;
+  union nez_expression* symbol_expression;
+};
+typedef struct nez_isa nez_isa;
+
+#define NEZ_INDENT 20
 struct nez_indent{
   nez_expr_base base;
 };
 typedef struct nez_indent nez_indent;
 
-#define NEZ_IF 20
+#define NEZ_IF 21
 struct nez_if{
   nez_expr_base base;
   char *flag_name;
 };
 typedef struct nez_if nez_if;
 
-#define NEZ_WITH 21
+#define NEZ_WITH 22
 struct nez_with{
   nez_expr_base base;
   union nez_expression *inner;
@@ -262,7 +271,7 @@ struct nez_with{
 };
 typedef struct nez_with nez_with;
 
-#define NEZ_WITHOUT 22
+#define NEZ_WITHOUT 23
 struct nez_without{
   nez_expr_base base;
   union nez_expression *inner;
@@ -333,43 +342,45 @@ void nez_dispose_new(nez_expression *expr);
   )
 nez_expression* _nez_new_left_join(nez_expression **expr, size_t size);
 void nez_dispose_left_join(nez_expression *expr);
-nez_expression* _nez_new_option(nez_expression *expr, size_t size);
+nez_expression* nez_new_option(nez_expression *expr);
 void nez_dispose_option(nez_expression *expr);
-nez_expression* _nez_new_repetition(nez_expression *expr, size_t size);
+nez_expression* nez_new_repetition(nez_expression *expr);
 void nez_dispose_repetition(nez_expression *expr);
-nez_expression* _nez_new_not(nez_expression *expr, size_t size);
+nez_expression* nez_new_not(nez_expression *expr);
 void nez_dispose_not(nez_expression *expr);
-nez_expression* _nez_new_and(nez_expression *expr, size_t size);
+nez_expression* nez_new_and(nez_expression *expr);
 void nez_dispose_and(nez_expression *expr);
-nez_expression* _nez_new_link(nez_expression *expr, size_t size);
+nez_expression* nez_new_link(nez_expression *expr);
 void nez_dispose_link(nez_expression *expr);
-nez_expression* _nez_new_tagging(nez_expression *expr, size_t size);
+nez_expression* nez_new_tagging(nez_tag* tag);
 void nez_dispose_tagging(nez_expression *expr);
-nez_expression* _nez_new_value(nez_expression *expr, size_t size);
+nez_expression* nez_new_value(char* value);
 void nez_dispose_value(nez_expression *expr);
-nez_expression* _nez_new_char(nez_expression *expr, size_t size);
+nez_expression* nez_new_char(char c);
 void nez_dispose_char(nez_expression *expr);
-nez_expression* _nez_new_charset(nez_expression *expr, size_t size);
+nez_expression* nez_new_charset(char* charset);
 void nez_dispose_charset(nez_expression *expr);
-nez_expression* _nez_new_string(nez_expression *expr, size_t size);
+nez_expression* nez_new_string(char* str);
 void nez_dispose_string(nez_expression *expr);
-nez_expression* _nez_new_any(nez_expression *expr, size_t size);
+nez_expression* nez_new_any();
 void nez_dispose_any(nez_expression *expr);
-nez_expression* _nez_new_non_terminal(nez_expression *expr, size_t size);
+nez_expression* nez_new_non_terminal(char* rule_name);
 void nez_dispose_non_terminal(nez_expression *expr);
-nez_expression* _nez_new_def(nez_expression *expr, size_t size);
+nez_expression* nez_new_def(nez_expression *expr, nez_tag* tag);
 void nez_dispose_def(nez_expression *expr);
-nez_expression* _nez_new_defindent(nez_expression *expr, size_t size);
+nez_expression* nez_new_defindent(nez_expression *expr);
 void nez_dispose_defindent(nez_expression *expr);
-nez_expression* _nez_new_is(nez_expression *expr, size_t size);
+nez_expression* nez_new_is(nez_expression *expr, nez_tag* tag);
 void nez_dispose_is(nez_expression *expr);
-nez_expression* _nez_new_indent(nez_expression *expr, size_t size);
+nez_expression* nez_new_isa(nez_expression *expr, nez_tag* tag);
+void nez_dispose_isa(nez_expression *expr);
+nez_expression* nez_new_indent(nez_expression *expr);
 void nez_dispose_indent(nez_expression *expr);
-nez_expression* _nez_new_if(nez_expression *expr, size_t size);
+nez_expression* nez_new_if(nez_expression *expr, char* flag_name);
 void nez_dispose_if(nez_expression *expr);
-nez_expression* _nez_new_with(nez_expression *expr, size_t size);
+nez_expression* nez_new_with(nez_expression *expr, char* flag_name);
 void nez_dispose_with(nez_expression *expr);
-nez_expression* _nez_new_without(nez_expression *expr, size_t size);
+nez_expression* nez_new_without(nez_expression *expr, char* flag_name);
 void nez_dispose_without(nez_expression *expr);
 
 typedef void (*dispose_expr_func_t)(nez_expression *);

@@ -74,6 +74,11 @@
 	nez_tag* table;
 	union nez_expression* symbol_expression;
 }
+#isa:func
+{
+	nez_tag* table;
+	union nez_expression* symbol_expression;
+}
 #indent:func
 {
 }
