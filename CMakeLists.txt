@@ -43,6 +43,7 @@ set(NEZVM_SOURCE
 			src/main.c
 			src/loader.c
 			src/arraylist.c
+			src/hashmap.c
 )
 
 set(PACKAGE_NAME    ${PROJECT_NAME})
