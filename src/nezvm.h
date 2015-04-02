@@ -305,7 +305,7 @@ struct nez_rule {
 };
 
 struct nez_grammar {
-  char* input_file_name;
+  const char* input_file_name;
   size_t rule_list_size;
   struct nez_rule *rule_list;
 };

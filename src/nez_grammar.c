@@ -17,7 +17,6 @@ nez_grammar* nez_create_grammar(const char *syntax_file, nez_rule *rule_list, si
 }
 
 void nez_dispose_grammar(nez_grammar* nez) {
-	free(nez->input_file_name);
 	nez_dispose_rules(nez->rule_list, nez->rule_list_size);
 	free(nez);
 }
