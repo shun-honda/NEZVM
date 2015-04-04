@@ -128,3 +128,17 @@ for expr in exprs:
 for expr in exprs:
 	print "#define " + expr.name.upper() + " nez_new_" + expr.name
 print "\n"
+
+for expr in exprs:
+	print "case NEZ_" + expr.name.upper() +":{"
+	print "\tnez_" + expr.name + " *e = (nez_"+ expr.name +"*)expr;"
+	print "\tprintf(\"" + expr.name + "\\n\");"
+	if expr.type == 0:
+		print "\tprintf(\"(\\n\");"
+		print "\tfor(size_t i = 0; i < e->base.size; i++) {"
+		print "\t\tnez_dump_expression(e->list[i]);"
+		print "\t}"
+		print "\tprintf(\")\\n\");"
+	elif expr.type == 1:
+		print "\tnez_dump_expression(e->inner);"
+	print "\tbreak;\n}"

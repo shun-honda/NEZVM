@@ -93,6 +93,9 @@ nez_tag_entry* tag_id(nez_tag* tag, int id);
 nez_tag_entry* nez_new_tag_entry(nez_tag* tag, char* name);
 void nez_dispose_tag_entry(void* tag_entry);
 
+nez_tag* nez_expr_tag;
+int nez_new_expr_tag();
+
 typedef bitset_t *bitset_ptr_t;
 
 #define NEZ_MAX_EXPR 23
@@ -181,6 +184,7 @@ typedef struct nez_and nez_and;
 #define NEZ_LINK 8
 struct nez_link{
   nez_expr_base base;
+  int index;
   union nez_expression *inner;
 };
 typedef struct nez_link nez_link;
@@ -307,7 +311,7 @@ struct nez_rule {
 struct nez_grammar {
   const char* input_file_name;
   size_t rule_list_size;
-  struct nez_rule *rule_list;
+  struct nez_rule **rule_list;
 };
 
 typedef struct nez_node nez_node;
@@ -323,36 +327,47 @@ void nez_dispose_node(nez_node* node);
 nez_context* nez_create_context(const char *input_file);
 void nez_dispose_context(nez_context* context);
 nez_grammar* nez_load_grammar(const char *syntax_file);
-nez_grammar* nez_create_grammar(const char *syntax_file, nez_rule *rule_list, size_t rule_list_size);
+nez_grammar* nez_create_grammar(nez_node* nez_ast);
 nez_node* nez_parse_grammar(char *syntax);
 void nez_dispose_grammar(nez_grammar* nez);
-nez_rule* nez_create_rules(size_t* rule_list_size);
-void nez_dispose_rules(nez_rule *rule_list, size_t rule_list_size);
+nez_rule** nez_create_rules(size_t rule_list_size);
+void nez_dispose_rules(nez_rule **rules, size_t rule_list_size);
 nezvm_instruction* nezvm_compile(nez_grammar* nez, char* start_point);
 void nezvm_dispose_instruction(nezvm_instruction* inst);
 
-#define nez_new_sequence(...)\
-  (nez_expression[][]){ __VA_ARGS__ },\
-  sizeof((nez_expression[][]){ __VA_ARGS__ }) / sizeof(nez_expression)\
+#define nez_new_sequence(...)                                           \
+  _nez_new_sequence(                                                    \
+    (nez_expression*[]){ __VA_ARGS__ },                                 \
+    sizeof((nez_expression*[]){ __VA_ARGS__ }) / sizeof(nez_expression*) \
   )
+
 nez_expression* _nez_new_sequence(nez_expression **expr, size_t size);
 void nez_dispose_sequence(nez_expression *expr);
-#define nez_new_choice(...)\
-  (nez_expression[][]){ __VA_ARGS__ },\
-  sizeof((nez_expression[][]){ __VA_ARGS__ }) / sizeof(nez_expression)\
+
+#define nez_new_choice(...)                                               \
+  _nez_new_choice(                                                        \
+    (nez_expression*[]){ __VA_ARGS__ },                                  \
+    sizeof((nez_expression*[]){ __VA_ARGS__ }) / sizeof(nez_expression*)  \
   )
+
 nez_expression* _nez_new_choice(nez_expression **expr, size_t size);
 void nez_dispose_choice(nez_expression *expr);
-#define nez_new_new(...)\
-  (nez_expression[][]){ __VA_ARGS__ },\
-  sizeof((nez_expression[][]){ __VA_ARGS__ }) / sizeof(nez_expression)\
+
+#define nez_new_new(...)                                                  \
+  _nez_new_new(                                                           \
+    (nez_expression*[]){ __VA_ARGS__ },                                     \
+    sizeof((nez_expression*[]){__VA_ARGS__}) / sizeof(nez_expression*)      \
   )
+
 nez_expression* _nez_new_new(nez_expression **expr, size_t size);
 void nez_dispose_new(nez_expression *expr);
-#define nez_new_left_join(...)\
-  (nez_expression[][]){ __VA_ARGS__ },\
-  sizeof((nez_expression[][]){ __VA_ARGS__ }) / sizeof(nez_expression)\
+
+#define nez_new_left_join(...)                                            \
+  _nez_new_left_join(                                                     \
+    (nez_expression*[]){ __VA_ARGS__ },                                  \
+    sizeof((nez_expression*[]){ __VA_ARGS__ }) / sizeof(nez_expression*)  \
   )
+
 nez_expression* _nez_new_left_join(nez_expression **expr, size_t size);
 void nez_dispose_left_join(nez_expression *expr);
 nez_expression* nez_new_option(nez_expression *expr);
@@ -364,6 +379,7 @@ void nez_dispose_not(nez_expression *expr);
 nez_expression* nez_new_and(nez_expression *expr);
 void nez_dispose_and(nez_expression *expr);
 nez_expression* nez_new_link(nez_expression *expr);
+nez_expression* nez_new_link_idx(int i, nez_expression *expr);
 void nez_dispose_link(nez_expression *expr);
 nez_expression* nez_new_tagging(nez_tag_entry* tag);
 void nez_dispose_tagging(nez_expression *expr);
@@ -395,6 +411,12 @@ nez_expression* nez_new_with(nez_expression *expr, char* flag_name);
 void nez_dispose_with(nez_expression *expr);
 nez_expression* nez_new_without(nez_expression *expr, char* flag_name);
 void nez_dispose_without(nez_expression *expr);
+
+#define NEZ_RULE_SIZE 38
+nez_rule** nez_load_nez_parser();
+
+void nez_dump_rules(nez_rule** rules);
+void nez_dump_expression(nez_expression* expr);
 
 typedef void (*dispose_expr_func_t)(nez_expression *);
 static dispose_expr_func_t f_dispose_expr[] = {

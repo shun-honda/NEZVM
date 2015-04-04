@@ -1,7 +1,7 @@
 #ifndef ARRAY_LIST_H
 #define ARRAY_LIST_H
 
-#define ARRAY_LIST_DEFAULT_SIZE 32
+#define ARRAY_LIST_DEFAULT_SIZE 256
 
 typedef void (dispose_array_list_func_t) (void *e);
 

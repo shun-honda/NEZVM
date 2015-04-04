@@ -40,7 +40,10 @@ set(NEZVM_SOURCE
 			src/nez_parser_combinator.c
 			src/nez_node.c
 			src/nez_tag.c
+			src/nez_parser.c
+			src/nez_expr_tag.c
 			src/nez_print_info.c
+			src/nez_dump.c
 			src/main.c
 			src/loader.c
 			src/arraylist.c

@@ -52,7 +52,7 @@ static int array_list_realloc(struct array_list *list, int max)
 
 int array_list_add_idx(array_list* list, void* e, int i) {
 	int max = i+1;
-	if(max < list->size) {
+	if(max > list->size) {
   	if(array_list_realloc(list, max)){
   		return -1;
   	}
@@ -61,7 +61,7 @@ int array_list_add_idx(array_list* list, void* e, int i) {
 		list->f(list->array[i]);
 	}
 	list->array[i] = e;
-	if(list->length < i) {
+	if(list->length <= i) {
 		list->length = i+1;
 	}
 	return 0;

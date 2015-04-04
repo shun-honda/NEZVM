@@ -2,7 +2,12 @@
 #include <string.h>
 
 nez_node* nez_parse_grammar(char *syntax) {
-	// function stub
+	nez_rule** rules = nez_load_nez_parser();
+	nez_dump_rules(rules);
+	nez_dispose_rules(rules, NEZ_RULE_SIZE);
+	nez_dispose_tag(nez_expr_tag);
+	exit(EXIT_FAILURE);
+	return NULL;
 }
 
 nez_expression* _nez_new_sequence(nez_expression **expr, size_t size) {
@@ -96,7 +101,6 @@ nez_expression* nez_new_option(nez_expression *expr) {
 void nez_dispose_option(nez_expression *expr) {
 	nez_option* e = (nez_option*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }
 
@@ -111,7 +115,6 @@ nez_expression* nez_new_repetition(nez_expression *expr) {
 void nez_dispose_repetition(nez_expression *expr) {
 	nez_repetition* e = (nez_repetition*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }
 
@@ -126,7 +129,6 @@ nez_expression* nez_new_not(nez_expression *expr) {
 void nez_dispose_not(nez_expression *expr) {
 	nez_not* e = (nez_not*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }
 
@@ -141,7 +143,6 @@ nez_expression* nez_new_and(nez_expression *expr) {
 void nez_dispose_and(nez_expression *expr) {
 	nez_and* e = (nez_and*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }
 
@@ -153,10 +154,18 @@ nez_expression* nez_new_link(nez_expression *expr) {
 	return (nez_expression *)e;
 }
 
+nez_expression* nez_new_link_idx(int i, nez_expression *expr) {
+	nez_link *e = (nez_link*)malloc(sizeof(nez_link));
+	e->base.expr = NEZ_LINK;
+	e->base.size = 1;
+	e->inner = expr;
+	e->index = i;
+	return (nez_expression *)e;
+}
+
 void nez_dispose_link(nez_expression *expr) {
 	nez_link* e = (nez_link*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }
 
@@ -170,7 +179,6 @@ nez_expression* nez_new_tagging(nez_tag_entry* tag) {
 
 void nez_dispose_tagging(nez_expression *expr) {
 	nez_tagging* e = (nez_tagging*)expr;
-	free(e->tag);
 	free(e);
 }
 
@@ -267,7 +275,6 @@ nez_expression* nez_new_def(nez_expression *expr, nez_tag_entry* tag) {
 void nez_dispose_def(nez_expression *expr) {
 	nez_def* e = (nez_def*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e->table);
 	free(e);
 }
@@ -342,7 +349,6 @@ nez_expression* nez_new_with(nez_expression *expr, char* flag_name) {
 void nez_dispose_with(nez_expression *expr) {
 	nez_with* e = (nez_with*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }
 
@@ -358,6 +364,5 @@ nez_expression* nez_new_without(nez_expression *expr, char* flag_name) {
 void nez_dispose_without(nez_expression *expr) {
 	nez_without* e = (nez_without*)expr;
 	f_dispose_expr[e->inner->base.expr](e->inner);
-	free(e->inner);
 	free(e);
 }

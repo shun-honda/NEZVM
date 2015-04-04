@@ -17,7 +17,7 @@ nez_tag_entry* tag(nez_tag* tag, char* name) {
 	nez_tag_entry* entry;
 	if(hashmap_get(tag->map, name, (void**)&entry) == -3) {
 		entry = nez_new_tag_entry(tag, name);
-		hashmap_put(tag->map, name, (void**)&entry);
+		hashmap_put(tag->map, name, entry);
 		array_list_add(tag->list, entry);
 	}
 	return entry;
